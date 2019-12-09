@@ -2,7 +2,11 @@ class Instructor::LessonsController < ApplicationController
   before_action :authenticate_user!
   before_action :require_authorized_for_current_section, only: [:create]
   before_action :require_authorized_for_current_lesson, only: [:update]
-  
+
+  #add this line from https://appsignal.com/for/invalid_authenticity_token
+  #authenticity errors occured when a new lesson was created  
+  skip_before_action :verify_authenticity_token
+
   def create
     @lesson = current_section.lessons.create(lesson_params)
     redirect_to instructor_course_path(current_section.course)
